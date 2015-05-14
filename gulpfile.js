@@ -18,6 +18,8 @@ var project 	   = 'somelikeitneat', // Project name, used for build zip.
 var gulp 			   = require('gulp'),
 	browserSync		 = require('browser-sync'), // Asynchronous browser loading on .scss file changes
 	phpcs 			   = require('gulp-phpcs'),
+	phpcbf         = require('gulp-phpcbf'),
+	gutil          = require('gutil'),
 	reload			   = browserSync.reload,
 	autoprefixer 	 = require('gulp-autoprefixer'), // Autoprefixing magic
 	minifycss 		 = require('gulp-uglifycss'),
@@ -31,7 +33,7 @@ var gulp 			   = require('gulp'),
 	runSequence 	 = require('gulp-run-sequence'),
 	sass 			     = require('gulp-sass'),
 	plugins 		   = require('gulp-load-plugins')({ camelize: true }),
-	del   			 	 = require('del'), // Helps with removing files and directories in our run tasks
+	del 			 	   = require('del'), // Helps with removing files and directories in our run tasks
 	zip 			     = require('gulp-zip'), // Using to zip up our packaged theme into a tasty zip file that can be installed in WordPress!
 	plumber 		   = require('gulp-plumber'), // Helps prevent stream crashing on errors
 	filter 			   = require('gulp-filter'),
@@ -65,11 +67,31 @@ gulp.task( 'phpcs', function() {
 	return gulp.src( phpSource )
 		.pipe( phpcs( {
 			bin: vendors+'composer/bin/phpcs',
-			standard: 'WordPress-Core'
+			standard: 'WordPress'
 		} ) )
 		.pipe( phpcs.reporter( 'log' ) )
 		.pipe( notify( { message: 'phpcs task complete', onLast: true } ) );
 } );
+
+/**
+ * PHP Code Beautifier
+ *
+ * PHP Tasks
+ *
+ * phpcbf --ignore='node_modules/*,vendor/*,*-min.css,assets/js/vendor/*,assets/bower_components/*,assets/css/*,*-min.js,assets/js/production.js' --standard=WordPress-Core .
+ *
+ */
+gulp.task('phpcbf', function () {
+  return gulp.src( phpSource)
+  .pipe(phpcbf({
+    bin: vendors+'composer/bin/phpcbf',
+    standard: 'WordPress',
+    warningSeverity: 0
+  }))
+  .on('error', gutil.log)
+	.pipe( notify( { message: 'phpcs task complete', onLast: true } ) )
+	// .pipe(gulp.dest('src'));
+});
 
 /**
  * Styles
