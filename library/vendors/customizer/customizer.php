@@ -9,12 +9,13 @@
  */
 
 
+
 /**
  * Add postMessage support for site title and description for the Theme Customizer.
  *
  * @param WP_Customize_Manager $wp_customize Theme Customizer object.
  */
-function some_like_it_neat_customize_register( $wp_customize ) 
+function some_like_it_neat_customize_register( $wp_customize )
 {
     $wp_customize->get_setting('blogname')->transport         = 'postMessage';
     $wp_customize->get_setting('blogdescription')->transport  = 'postMessage';
@@ -25,12 +26,12 @@ add_action('customize_register', 'some_like_it_neat_customize_register');
 /**
  * Customizer Sanitization Functions
  */
-function some_like_it_neat_sanitize_text( $input ) 
+function some_like_it_neat_sanitize_text( $input )
 {
     return wp_kses_post(force_balance_tags($input));
 }
 
-function some_like_it_neat_sanitize_checkbox( $input ) 
+function some_like_it_neat_sanitize_checkbox( $input )
 {
     if (1 == $input ) {
         return 1;
@@ -43,7 +44,7 @@ function some_like_it_neat_sanitize_checkbox( $input )
  * Customizer Some Like it Neat Additions
  */
 
-function some_like_it_neat_add_customizer_theme_options($wp_customize) 
+function some_like_it_neat_add_customizer_theme_options($wp_customize)
 {
 
     // Remove Default Sections, Settings and Controls
@@ -65,7 +66,7 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
         'theme_supports' => '',
         'title' => __('General Site Content Settings', 'some-like-it-neat'),
         'description' => __('Various site settings and config.', 'some-like-it-neat'),
-        ) 
+        )
     );
 
     // General Link Colors
@@ -76,14 +77,14 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
         'theme_supports' => '',
         'title' => __('Color Palette Settings', 'some-like-it-neat'),
         'description' => __('Color palette related settings and config.', 'some-like-it-neat'),
-        ) 
+        )
     );
 
     $wp_customize->add_setting(
         'some_like_it_neat_add_link_color', array(
         'default'            => '#000000',
         'sanitize_callback'     => 'maybe_hash_hex_color',
-        ) 
+        )
     );
 
     $wp_customize->add_control(
@@ -94,7 +95,7 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
             'settings'        => 'some_like_it_neat_add_link_color',
             'priority'        => 6,
             )
-        ) 
+        )
     );
 
     /**
@@ -107,7 +108,7 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
         'theme_supports' => '',
         'title' => __('Navigation Settings', 'some-like-it-neat'),
         'description' => __('Navigation related settings and config.', 'some-like-it-neat'),
-        ) 
+        )
     );
 
     $wp_customize->add_section(
@@ -118,7 +119,7 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
             'title' => __('Navigation Setup', 'some-like-it-neat'),
             'description' => '',
             'panel' => 'navigation_panel',
-        ) 
+        )
     );
 
     // Mobile nav label
@@ -204,7 +205,7 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
         'theme_supports' => '',
         'title' => __('Footer Settings', 'some-like-it-neat'),
         'description' => __('Settings related to the Footer Section.', 'some-like-it-neat'),
-        ) 
+        )
     );
 
     $wp_customize->add_section(
@@ -215,7 +216,7 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
         'title' => __('Footer Area Settings', 'some-like-it-neat'),
         'description' => 'Enter copy for right, left and colophon footer areas',
         'panel' => 'footer_settings_panel',
-        ) 
+        )
     );
 
     $wp_customize->add_setting(
@@ -280,7 +281,7 @@ function some_like_it_neat_add_customizer_theme_options($wp_customize)
         'title' => __('Content Extras', 'some-like-it-neat'),
         'description' => '',
         'panel' => 'site_content',
-        ) 
+        )
     );
 
     /**
@@ -387,7 +388,7 @@ add_action('customize_register', 'some_like_it_neat_add_customizer_theme_options
  * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
  */
 
-function some_like_it_neat_customize_preview_js() 
+function some_like_it_neat_customize_preview_js()
 {
     wp_enqueue_script('some_like_it_neat_customizer', get_stylesheet_directory_uri() . '/library/vendors/customizer/js/customizer.js', array( 'customize-preview' ), '20130508', true);
 }
